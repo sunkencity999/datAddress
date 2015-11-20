@@ -1,5 +1,6 @@
 require_relative "../models/address_book"
 
+
   class MenuController
     attr_accessor :address_book
 
@@ -14,7 +15,8 @@ require_relative "../models/address_book"
       puts "2 - Create an entry"
       puts "3 - Search for an entry"
       puts "4 - Import entries from a CSV"
-      puts "5 - Exit"
+      puts "5 - View entry n"
+      puts "6 - Exit"
 
       print " Enter your selection: "
 #Retrives user input from the command line using gets, which reads the next line from standard input
@@ -49,6 +51,12 @@ require_relative "../models/address_book"
 
       when 5
 
+      system "clear"
+      entry_n_submenu
+      main_menu
+
+      when 6
+
         puts "Goodbye!"
 # terminates the program. exit(0) terminates without an error. 
         exit(0)
@@ -61,6 +69,23 @@ require_relative "../models/address_book"
       end
     end
 
+    def entry_n_submenu
+
+    print "Entry number to view: "
+    selection = gets.chomp.to_i
+
+      if   selection < @address_book.entries.count
+        puts @address_book.entries[selection]
+        puts "Press enter to return to the main menu"
+        gets.chomp
+        system "clear"
+      else
+        puts "#{selection} is not a valid entry."
+        entry_n_submenu
+      end
+    end
+
+
     def view_all_entries
 #iterates through all entries, clears the screen, and then displays them as string using puts    
       @address_book.entries.each do |entry|
@@ -69,6 +94,9 @@ require_relative "../models/address_book"
 # calls entry_submenu to display a submenu for each entry
         entry_submenu(entry)
       end
+
+      system "clear"
+      puts "End of Entries"
     end
 
     def create_entry
