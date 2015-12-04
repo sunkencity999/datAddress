@@ -35,7 +35,21 @@ class AddressBook
         end
       end
       @entries.delete(delete_entry)
-    end  
+    end
+#this method starts by reading the file using File.read. Uses the CSV class to 'parse' the file, the result of which is an object
+#of type CSV::Table.
+    def import_from_csv(file_name)
+      csv_text = File.read(file_name)
+      csv = CSV.parse(csv_text, headers: true, skip_blanks: true)
+#here we iterate over each row in the CSV::Table object, create a hash for each row, then use the add_entry method to add it to 
+#AdressBook's entries 
+      csv.each do |row|
+        row_hash = row.to_hash
+        add_entry(row_hash["name"], row_hash["phone_number"], row_hash["email"])
+      end
+    end
+
+  
 end
 
 
