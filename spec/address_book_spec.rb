@@ -55,26 +55,51 @@ require_relative '../models/address_book.rb'
     context ".import_from_csv" do
       it "imports the correct number of entries from csv file" do
 
-        book.import_from_csv("../models/entries.csv")
-        book_size = book.entries.csv
+        book.import_from_csv("/home/christopher/datAddress/models/entries.csv")
+        book_size = book.entries.length
 
-        expect(book_size).to eql 5  
+        expect(book_size).to eql 2  
       end
       it "imports the 1st entry" do 
 
-        book.import_from_csv("entries.csv")
+        book.import_from_csv("/home/christopher/datAddress/models/entries.csv")
         #Check the first entry
         entry_one = book.entries[0]
-        check_entry(entry_one, "Bill"," 555-555-5555", "bill@samplemail.com")
+        check_entry(entry_one, "Bill","555-555-5555", "bill@samplemail.com")
       end      
      it "imports the 2nd entry" do
 
-       book.import_from_csv("entries.csv")
+       book.import_from_csv("/home/christopher/datAddress/models/entries.csv")
        #check the second entry
        entry_two = book.entries[1]
        check_entry(entry_two, "Jill","444-444-4444", "jill@samplemail.com")
      end 
     end
-   end
+
+    context "#binary_search" do
+      it "searches datAddress for a non-existent entry" do
+        book.import_from_csv("entries.csv")
+        entry = book.binary_search("Dan")
+        expect(entry).to be_nil
+      end
+
+      it "searches datAddress for Bill" do
+        book.import_from_csv("entries.csv")
+        entry = book.binary_search("Bill")
+        expect(entry).to be_a Entry
+        check_entry(entry, "Bill", "555-555-5555", "bill@samplemail.com")
+      end
+    end
+    
+    context "#iterative_search" do 
+      it "Searched datAddress for a non-existent entry using iteration" do
+        book.import_from_csv("/home/christopher/datAddress/models/entries.csv")
+        entry = book.iterative_search("Rich")
+        expect(entry).to be_nil
+      end
+    end  
+
+
+ end
 
 
